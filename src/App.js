@@ -1,9 +1,14 @@
 import './App.css';
-import Login from './page/Login'
+import {useRoutes} from 'hookrouter';
+import routes from './route/routes'
+
+
 function App() {
+  const routeResults = useRoutes(routes);
+
   return (
-    <div className="App">
-      <Login />
+    <div id ='App'>
+       {routeResults}
     </div>
   );
 }
