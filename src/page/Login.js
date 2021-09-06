@@ -71,9 +71,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const interceptFunction = (currentPath, nextPath) => {
-  // if(confirm('Do you want to leave?')){
-  //     return nextPath;
-  // }
   return nextPath;
 }
 const Login = () => {
@@ -94,8 +91,11 @@ const Login = () => {
       password
     }
     loginRequest(loginMess).then((res)=>{
-      console.log(res)
       stopInterceptor();
+      if(res.flag === 0){
+        //err
+        
+      }
       navigate('/Main');
     }).catch((err)=>{
       console.error(err)
