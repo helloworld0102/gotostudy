@@ -1,8 +1,9 @@
-import React, { useState} from 'react'
+import React, { useState,useContent} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import {navigate,useInterceptor} from 'hookrouter'
 import {loginRequest} from '../request/userRequest'
+import {snackBarContext} from '../redux/snackBarRedux'
 import userPic from '../static/img/username.png'
 import passwordPic from '../static/img/password.png'
 import logo from '../static/img/logo.png'
@@ -78,6 +79,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const classes = useStyles();
   const stopInterceptor = useInterceptor(interceptFunction);
+  const {dispatch} = useContent(snackBarContext);
   
   const changeUserName =(e)=>{
     setUserName(e.target.value)
@@ -91,13 +93,15 @@ const Login = () => {
       password
     }
     loginRequest(loginMess).then((res)=>{
-      stopInterceptor();
       if(res.flag === 0){
-        //err
-        
+        dispatch({type:"open",message:res.message})
+        return;
       }
+      else{
+      dispatch({type:"open",message:res.message})
+      stopInterceptor();
       navigate('/Main');
-    }).catch((err)=>{
+      }}).catch((err)=>{
       console.error(err)
     })
     

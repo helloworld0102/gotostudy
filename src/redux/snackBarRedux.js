@@ -1,22 +1,27 @@
-import React,{createContent,useReducer} from 'react';
+import React,{createContext,useReducer} from 'react';
 
+const initSnackBar = {open:false,message:""}
 //控制snackbar的打开与关闭
-export const snackBarContent = createContent({});  //共享变量
+export const snackBarContext = createContext({});  //共享变量
 
 const reducer =(state,action)=>{
     switch(action.type){//判断需要做的操作
         case "open":
             return {open:true,message:action.message}
+        case "close":
+            return initSnackBar
         default:
             return state
     }
 }
-export const snackbar = props=>{//使用共享变量的组件
-    const[snackbarval,dispatch] = useReducer(reducer,{open:false,message:""})
+
+export const SnackShare = props=>{//使用共享变量的组件
+    const[snackbarval,dispatch] = useReducer(reducer,initSnackBar)
+
     return(
-        <snackBarContent.Provider value = {snackbarval}>
+        <snackBarContext.Provider value = {{snackbarval,dispatch}}>
             {props.children}
-        </snackBarContent.Provider>
+        </snackBarContext.Provider>
     )
     
 }
