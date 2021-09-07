@@ -1,14 +1,16 @@
 import React,{useContext} from 'react'
 import {useRoutes} from 'hookrouter';
 import routes from './route/routes'
-import {SnackShare, snackBarContext} from './redux/snackBarRedux'
+import {SnackShare, SnackBarContext} from './redux/snackBarRedux'
 import {Snackbar} from '@material-ui/core'
 import './App.css';
+import MySnackBar from './components/childSnackbar';
 
 
 function App() {
   const routeResults = useRoutes(routes)
-  const {snackbarval,dispatch} = useContext(snackBarContext)
+  const {dispatch}= useContext(SnackBarContext)
+  const {snackbarval} = useContext(SnackBarContext)
   return (
     //通过使用flag来获取到当前状态值，从而修改我们组件的状态
     <SnackShare>
