@@ -1,28 +1,28 @@
-import React,{useContext} from 'react'
-import {useRoutes} from 'hookrouter';
+import React from 'react'
+import { useSelector,useDispatch} from 'react-redux'
+import {snackBarActionType} from './utils/constants'
+import {useRoutes} from 'hookrouter'
 import routes from './route/routes'
-import {SnackShare, SnackBarContext} from './redux/snackBarRedux'
 import {Snackbar} from '@material-ui/core'
-import './App.css';
-import MySnackBar from './components/childSnackbar';
+import './App.css'
 
 
 function App() {
   const routeResults = useRoutes(routes)
-  const {dispatch}= useContext(SnackBarContext)
-  const {snackbarval} = useContext(SnackBarContext)
+  const dispatch = useDispatch();
+  const snackflag = useSelector(state=>state.snackBarReducer)
+ 
   return (
-    //通过使用flag来获取到当前状态值，从而修改我们组件的状态
-    <SnackShare>
     <div id ='App'>
        {routeResults}
-       <Snackbar autoHideDuration="500" 
-       message={snackbarval.message} 
-       open= {snackbarval.open}
-       onClose ={dispatch({type:"close",message:""})}>
+       <Snackbar 
+       autoHideDuration = {1000}
+       message={snackflag.message} 
+       open= {snackflag.open}
+       onClose = {()=>dispatch({type:snackBarActionType.ACTION_CLOSE,payload:{}})}
+       >
        </Snackbar>
     </div>
-    </SnackShare>
   );
 }
 

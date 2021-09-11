@@ -1,12 +1,14 @@
-import React, { useState,useContext} from 'react'
+import React, { useState} from 'react'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import {navigate,useInterceptor} from 'hookrouter'
 import {loginRequest} from '../request/userRequest'
-import {SnackBarContext} from '../redux/snackBarRedux'
+import {userActionType,snackBarActionType} from '../utils/constants'
 import userPic from '../static/img/username.png'
 import passwordPic from '../static/img/password.png'
 import logo from '../static/img/logo.png'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
     outline: "none", 
     border: "none", 
     backgroundColor: "transparent", 
-    marginLeft: "20px" 
+    marginLeft: "20px" ,
+    autocomplete:"off"
   },
   errmsg:{
     alignSelf: "flex-end", 
     marginRight: "40px", 
     marginTop: "-30px", 
-    visibility: "hidden", 
     color: "red" 
   },
   loginButton:{
@@ -75,29 +77,41 @@ const interceptFunction = (currentPath, nextPath) => {
   return nextPath;
 }
 const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState({value:"",err:"hidden"});
+  const [password, setPassword] = useState({value:"",err:"hidden"});
   const classes = useStyles();
   const stopInterceptor = useInterceptor(interceptFunction);
-  const {dispatch} = useContext(SnackBarContext);
+  const dispatch = useDispatch();
   const changeUserName =(e)=>{
-    setUserName(e.target.value)
+    setUserName({...userName,value:e.target.value})
   }
   const changePassword =(e)=>{
-    setPassword(e.target.value)
+    setPassword({...password,value:e.target.value})
   }
+  //在用户离开焦点之后，判断用户是否输入，从而显示错误信息
+  const userNameIsNull=(e)=>{
+      setUserName({...userName,err:e.target.value==="" ? true :"hidden"})
+  }
+  const passwordIsNull=(e)=>{
+      setPassword({...password,err:e.target.value==="" ? true :"hidden"})
+  }
+
   const login= ()=>{
+    if(userName.value==="" || password.value === ""){
+      return;
+    }
     const loginMess ={
-      userName,
-      password
+      userName:userName.value,
+      password:password.value
     }
     loginRequest(loginMess).then((res)=>{
       if(res.flag === 0){
-        dispatch({type:"open",message:res.message})
+        dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+        dispatch({type:userActionType.ACTION_LOGIN,payload:res.data.data})
         return;
       }
       else{
-      dispatch({type:"open",message:res.message})
+      dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
       stopInterceptor();
       navigate('/Main');
       }}).catch((err)=>{
@@ -112,21 +126,21 @@ const Login = () => {
       </Grid>
       <Grid item xs={1}>
       </Grid>
-      <Grid container xs={8} className={classes.formroot}>
+
+      <Grid container xs ={8} className={classes.formroot} item={true}>
         <div className={classes.loginBox}>
           <img src={logo} alt="logo" />
           <div className={classes.inutBox}>
             <img src={userPic} alt="用户名称" />
-            <input type="text" className={classes.input} placeholder="用户名" value={userName} onChange ={(e)=>changeUserName(e)}/>
+            <input type="text" className={classes.input}  placeholder="用户名" value={userName.value} onChange ={(e)=>changeUserName(e)} onBlur ={(e)=>userNameIsNull(e)}/>
           </div>
-          <p className={classes.errmsg}>用户不存在</p>
+          <p className={classes.errmsg} style={{visibility:userName.err}}>用户不存在</p>
           <div className={classes.inutBox}>
             <img src={passwordPic} alt="密码" />
-            <input type="password" className={classes.input} placeholder="密码" value={password} onChange ={(e)=>changePassword(e)}/>
+            <input type="password" className={classes.input} placeholder="密码" value={password.value} onChange ={(e)=>changePassword(e)} onBlur ={(e)=>passwordIsNull(e)}/>
           </div>
-          <p className={classes.errmsg}>密码错误</p>
+          <p className={classes.errmsg} style={{visibility:password.err}} >密码错误</p>
           <button value="登录" className={classes.loginButton} onClick ={()=>login()}>登录</button>
-          {/* <A href="/Main">Users Page</A>  */}
           <div className ={classes.aBox}>
           <a className={classes.link} href="www.baidu.com">快速注册</a>
           <a className={classes.link} href="www.baidu.com">忘记密码</a>
