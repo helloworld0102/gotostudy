@@ -1,13 +1,15 @@
-import React, { useState} from 'react'
+import React, { useState,useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import {navigate,useInterceptor} from 'hookrouter'
 import {loginRequest} from '../request/userRequest'
 import {userActionType,snackBarActionType} from '../utils/constants'
+import Avatar from '@material-ui/core/Avatar';
 import userPic from '../static/img/username.png'
 import passwordPic from '../static/img/password.png'
 import logo from '../static/img/logo.png'
+import addFile from '../static/img/addFile.png'
 
 
 
@@ -79,9 +81,11 @@ const interceptFunction = (currentPath, nextPath) => {
 const Login = () => {
   const [userName, setUserName] = useState({value:"",err:"hidden"});
   const [password, setPassword] = useState({value:"",err:"hidden"});
+  const [headPic,setHeadPic] = useState (addFile);
   const classes = useStyles();
   const stopInterceptor = useInterceptor(interceptFunction);
   const dispatch = useDispatch();
+  const fileRef = useRef();
   const changeUserName =(e)=>{
     setUserName({...userName,value:e.target.value})
   }
@@ -95,7 +99,13 @@ const Login = () => {
   const passwordIsNull=(e)=>{
       setPassword({...password,err:e.target.value==="" ? true :"hidden"})
   }
-
+  const changeHead = (e)=>{
+    console.log(e);
+      // setHeadPic(require(e.target.value))
+  }
+  const onClickToFile = ()=>{
+    fileRef.current.click();
+  }
   const login= ()=>{
     if(userName.value==="" || password.value === ""){
       return;
@@ -148,6 +158,8 @@ const Login = () => {
         </div>
       </Grid>
       <Grid item xs={2}>
+      <input type ="file" style={{display:"none"}} ref={fileRef} onChange ={(e)=>{changeHead(e)}}/>
+      <Avatar  sizes= "100vw" src={headPic} onClick ={()=>{onClickToFile()}}/>
       </Grid>
 
     </Grid>
