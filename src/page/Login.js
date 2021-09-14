@@ -10,12 +10,15 @@ import userPic from '../static/img/username.png'
 import passwordPic from '../static/img/password.png'
 import logo from '../static/img/logo.png'
 import addFile from '../static/img/addFile.png'
-
+import bg from "../static/img/loginbackground.jpeg"
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%'
+    height: '100%',
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundImage: `url(${bg})` 
   },
   formroot: {
     direction: "column",
@@ -24,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   loginBox:{
     width: "40%",
-    height: "80%", 
+    height: "70%", 
     border: "1px solid rgba(255, 215, 0)", 
     borderRadius: "20px",
     display: "flex",
@@ -100,8 +103,17 @@ const Login = () => {
       setPassword({...password,err:e.target.value==="" ? true :"hidden"})
   }
   const changeHead = (e)=>{
-    console.log(e);
-      // setHeadPic(require(e.target.value))
+    console.log("文件选择的内容是"+e.target.files[0]);
+      // setHeadPic(getObjectURL(e.target.files[0]))
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload=function(e){
+        //读取成功后返回的一个参数e，整个的一个进度事件
+            console.log(e);
+        //选择所要显示图片的img，要赋值给img的src就是e中target下result里面
+        //的base64编码格式的地址
+        setHeadPic(e.target.result);
+          }
   }
   const onClickToFile = ()=>{
     fileRef.current.click();
@@ -153,7 +165,7 @@ const Login = () => {
           <button value="登录" className={classes.loginButton} onClick ={()=>login()}>登录</button>
           <div className ={classes.aBox}>
           <a className={classes.link} href="www.baidu.com">快速注册</a>
-          <a className={classes.link} href="www.baidu.com">忘记密码</a>
+          <a className={classes.link} href="#">忘记密码？（请找管理员）</a>
           </div>
         </div>
       </Grid>
