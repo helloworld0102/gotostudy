@@ -74,7 +74,8 @@ const useStyles = makeStyles((theme) => ({
   },
   link:{
     textDecoration:"none",
-    color:"black"
+    color:"black",
+    cursor:"pointer"
   }
 }));
 
@@ -139,7 +140,10 @@ const Login = () => {
       }}).catch((err)=>{
       console.error(err)
     })
-    
+  }
+
+  const gotoRegister = () =>{
+    navigate('/Register')
   }
 
   return (
@@ -164,7 +168,7 @@ const Login = () => {
           <p className={classes.errmsg} style={{visibility:password.err}} >密码错误</p>
           <button value="登录" className={classes.loginButton} onClick ={()=>login()}>登录</button>
           <div className ={classes.aBox}>
-          <a className={classes.link} href="www.baidu.com">快速注册</a>
+          <a className={classes.link} onClick ={() => gotoRegister()}>快速注册</a>
           <a className={classes.link} href="#">忘记密码？（请找管理员）</a>
           </div>
         </div>
