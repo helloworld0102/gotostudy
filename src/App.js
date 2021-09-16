@@ -4,6 +4,7 @@ import {snackBarActionType} from './utils/constants'
 import {useRoutes} from 'hookrouter'
 import routes from './route/routes'
 import {Snackbar} from '@material-ui/core'
+import NotFind from './page/NotFind'
 import './App.css'
 
 
@@ -14,7 +15,7 @@ function App() {
  
   return (
     <div id ='App'>
-       {routeResults}
+       {routeResults || <NotFind/>}
        <Snackbar 
        autoHideDuration = {1000}
        message={snackflag.message} 

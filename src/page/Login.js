@@ -143,7 +143,7 @@ const Login = () => {
   }
 
   const gotoRegister = () =>{
-    navigate('/Register')
+    navigate('/Register/')
   }
 
   return (

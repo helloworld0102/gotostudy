@@ -8,36 +8,43 @@ import bg from "../../static/img/loginbackground.jpeg"
 import MailRegister from './MailRegister'
 import PasswordSet from './PasswordSet'
 import BaseInfo from './BaseInfo'
+import NotFind from '../NotFind'
 
 const useStyles = makeStyles((theme) => ({
     /*注册页面的最外层*/
     RegisterDiv: {
       height: '100%',
+      display:"flex",
+      justifyContent: "center",
+      alignItems: "center",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundImage: `url(${bg})` 
     },
     /*让里面的内容处在中间位置且控制大小，不至于出现内容少但是占的地方大的情况，很难看*/
     ContentDiv:{
-     margin:"auto",/*重要,IE兼容模式*/
-     height:"100%",
-     width:"500px",
-    //  backgroundColor:"red"
+    width: "30%",
+    height: "70%", 
+     display:"flex",
+     flexDirection:"column",
+    //  border:"1px solid yellow",
+    //  borderRadius:"10px"
     },
     root:{
         backgroundColor: "transparent", 
     },
     RegisterContent:{
     display:"flex",
-    flexDirection:"row"
+    flexDirection:"column",
+    flex:1
     }
 }))
 
 const routes = {
-    '/Register' :()=><MailRegister/>,
-    '/Register/setPassword' :()=> <PasswordSet/>,
-    '/Register/baseInfo' :()=> <BaseInfo/>
-   };
+    '/' :()=><MailRegister/>,                   //hookrouter中/代表的是当前目录,可以认为这就是默认进去的子路由
+    'PasswordSet' :()=> <PasswordSet/>,         //这里不要写/，把这个理解成cmd中的cd，只是理解的方式，但真正的可能不是这样，因为这个是试出来的
+    'BaseInfo' :()=> <BaseInfo/>
+}
 
 
 const Register = () => {
@@ -59,7 +66,7 @@ const Register = () => {
                 ))}
             </Stepper>
             <div className ={classes.RegisterContent}>
-                    {routeResults}
+                    {routeResults || <NotFind/>}
             </div>
             </div>
         </div>
