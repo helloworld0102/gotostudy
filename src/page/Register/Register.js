@@ -23,20 +23,11 @@ const useStyles = makeStyles((theme) => ({
     },
     /*让里面的内容处在中间位置且控制大小，不至于出现内容少但是占的地方大的情况，很难看*/
     ContentDiv:{
-    width: "30%",
-    height: "70%", 
-     display:"flex",
-     flexDirection:"column",
-    //  border:"1px solid yellow",
-    //  borderRadius:"10px"
+    width: "25%",
+    height:"500px"
     },
     root:{
         backgroundColor: "transparent", 
-    },
-    RegisterContent:{
-    display:"flex",
-    flexDirection:"column",
-    flex:1
     }
 }))
 
@@ -65,9 +56,7 @@ const Register = () => {
                     </Step>
                 ))}
             </Stepper>
-            <div className ={classes.RegisterContent}>
-                    {routeResults || <NotFind/>}
-            </div>
+            {routeResults || <NotFind/>}
             </div>
         </div>
     )

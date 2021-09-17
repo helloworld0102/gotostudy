@@ -1,25 +1,64 @@
+import  React,{ useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import userPic from '../../static/img/username.png'
+import mailPic from '../../static/img/mail.png'
+import validateCodePic from '../../static/img/validateCode.png'
 import {navigate,useInterceptor} from 'hookrouter'
 
 const useStyles = makeStyles((theme) => ({
-  inutBox:{
-    flex:1,
+  //input外部容器公共属性
+  inutBoxBase:{
     height: "50px", 
-    width: "80%", 
     border: "1px solid rgba(255, 215, 0)", 
-    borderRadius: "20px",
-    paddingLeft: "20px", 
     lineHeight: "50px" 
   },
-    input:{
+  //邮箱输入容器独有属性
+  mailInputCss:{
+    width: "100%", 
+    marginTop:"30px"
+  },
+   //验证框输入容器独有属性
+  validataInputCss:{
+    marginRight:"20px",
+    flex:1
+  },
+  //输入框的属性
+  input:{
       color: "yellow",
       outline: "none", 
       border: "none", 
       backgroundColor: "transparent", 
       marginLeft: "20px" ,
       autocomplete:"off"
-    }
+  },
+  //验证的那一行控件的外部容器
+  validateLine:{
+      display:"flex",
+      height:"50px",
+      marginTop:"30px"
+  },
+  //按钮基础属性
+  btnBase:{
+    backgroundColor: "yellow", 
+    border: 0, 
+    color: "#5493f0",
+    fontSize:"15px",
+    height:"50px"
+  },
+  //发送验证码按钮独有属性
+  validateBtnCss:{
+    width:"100px"
+  },
+  //下一步按钮独有属性
+  nextBtnCss:{
+    width:"100%",
+    marginTop:"30px",
+  },
+  errMsg:{
+    color:"red",
+    textAlign:"left",
+    marginTop:"10px",
+    height:"30px"
+  }
   }));
 
 const gotoNext =()=>{
@@ -27,16 +66,41 @@ const gotoNext =()=>{
 }
 const MailRegister = ()=>{
     const classes = useStyles()
+    const [mailBox,setMailBox] = useState("");  //控制邮箱的内容
+    const [validataCode,setValidateCode] = useState("")  //控制验证码的内容
+    const [mailErrMsg,setMailErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
+    const [validateErrMsg,setValidateErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
+
+    const validateMail = () =>{
+      //判断输入是否为空
+      if(mailBox === ""){
+        setMailErrMsg({message:"输入邮箱不能为空",show:"true"})
+      }else{
+        
+      }
+    }
+
     return(
         <>
-            <div className={classes.inutBox}>
-            <img src={userPic} alt="用户名称" />
-            <input type="text" className={classes.input}  placeholder="用户名" value={10} />
+            <div className={`${classes.inutBoxBase} ${classes.mailInputCss}`}>
+            <img src={mailPic} alt="邮箱" />
+            <input type="text" 
+            className={classes.input} 
+            value={mailBox} 
+            onChange= {(e)=>{setMailBox(e.target.value)}} 
+            onBlur = {()=>validateMail}
+            placeholder="请输入您的邮箱"  />
             </div>
-            <div className={classes.inutBox}>
-            <img src={userPic} alt="用户名称" />
-            <input type="text" className={classes.input}  placeholder="用户名" value={10} />
+            <div className={classes.errMsg}>您输入的邮箱格式有误</div>
+            <div className ={classes.validateLine}>
+            <div className={`${classes.inutBoxBase} ${classes.validataInputCss}`}>
+            <img src={validateCodePic} alt="验证码" />
+            <input type="text" className={classes.input} value={validataCode} onChange= {(e)=>{setValidateCode(e.target.value)}} placeholder="请输入验证码" />
             </div>
+            <button className ={`${classes.btnBase} ${classes.validateBtnCss}`}>发送验证码</button>
+            </div>
+            <div  className={classes.errMsg}>您输入的验证码有误</div>
+            <button className={`${classes.btnBase} ${classes.nextBtnCss}`} onClick={()=>gotoNext()}>下一步</button>
         </>
     )
 }
