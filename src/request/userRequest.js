@@ -12,4 +12,11 @@ const loginRequest =({userName,password})=>{
     })
 }
 
-export {loginRequest} 
+const  validataSend = (email)=>{
+    return axios({
+        url:getrequesturl("/User/validataSend")+"/"+email,
+        method:"get"
+    })
+}
+
+export {loginRequest,validataSend} 

@@ -64,7 +64,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "yellow", 
     borderRadius: "20px", 
     border: 0, 
-    color: "#5493f0" 
+    color: "#5493f0" ,
+    '&:hover':{
+      opacity:0.7
+    }
   },
   aBox:{
     display:"flex",

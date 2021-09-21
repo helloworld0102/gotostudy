@@ -2,14 +2,16 @@ import  React,{ useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import mailPic from '../../static/img/mail.png'
 import validateCodePic from '../../static/img/validateCode.png'
-import {navigate,useInterceptor} from 'hookrouter'
+import {navigate} from 'hookrouter'
+import {validataSend} from '../../request/userRequest'
 
 const useStyles = makeStyles((theme) => ({
   //input外部容器公共属性
   inutBoxBase:{
     height: "50px", 
     border: "1px solid rgba(255, 215, 0)", 
-    lineHeight: "50px" 
+    lineHeight: "50px",
+    display:"flex"
   },
   //邮箱输入容器独有属性
   mailInputCss:{
@@ -28,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
       border: "none", 
       backgroundColor: "transparent", 
       marginLeft: "20px" ,
-      autocomplete:"off"
+      autocomplete:"off",
+      cursor:"text",
+      width:"100%",
+      flex:1
   },
   //验证的那一行控件的外部容器
   validateLine:{
@@ -42,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
     border: 0, 
     color: "#5493f0",
     fontSize:"15px",
-    height:"50px"
+    height:"50px",
+    '&:hover':{
+      opacity:0.7
+    }
   },
   //发送验证码按钮独有属性
   validateBtnCss:{
@@ -71,33 +79,59 @@ const MailRegister = ()=>{
     const [mailErrMsg,setMailErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const [validateErrMsg,setValidateErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
 
+    
+
     const validateMail = () =>{
+      const mailRegex = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;  //抄写的掘金上的。https://juejin.cn/post/6844903795386744845
       //判断输入是否为空
       if(mailBox === ""){
-        setMailErrMsg({message:"输入邮箱不能为空",show:"true"})
-      }else{
-        
+        setMailErrMsg({message:"输入邮箱不能为空",show:true})
+        return
       }
+      //判断输入的邮箱是否规范
+      if(!mailRegex.test(mailBox)){
+        setMailErrMsg({message:"请输入正确的邮箱",show:true})
+        return
+      }
+      setMailErrMsg({message:"",show:false})
     }
-
+    
+    const sendValidate = ()=>{
+      validataSend(mailBox).then((res)=>{
+        // if(res.flag === 0){
+        //   dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+        //   dispatch({type:userActionType.ACTION_LOGIN,payload:res.data.data})
+        //   return;
+        // }
+        // else{
+        // dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+        // stopInterceptor();
+        // navigate('/Main');
+        // }}).catch((err)=>{
+        // console.error(err)
+      })
+    }
+    
     return(
         <>
             <div className={`${classes.inutBoxBase} ${classes.mailInputCss}`}>
             <img src={mailPic} alt="邮箱" />
             <input type="text" 
+            id = "mailbox"
             className={classes.input} 
             value={mailBox} 
-            onChange= {(e)=>{setMailBox(e.target.value)}} 
-            onBlur = {()=>validateMail}
+            onChange= {(e)=>{setMailBox(e.target.value)}}
+            onBlur = {()=>validateMail()}
             placeholder="请输入您的邮箱"  />
             </div>
-            <div className={classes.errMsg}>您输入的邮箱格式有误</div>
+            <div className={classes.errMsg} style={{visibility:mailErrMsg.show}}>{mailErrMsg.message}</div>
             <div className ={classes.validateLine}>
             <div className={`${classes.inutBoxBase} ${classes.validataInputCss}`}>
             <img src={validateCodePic} alt="验证码" />
             <input type="text" className={classes.input} value={validataCode} onChange= {(e)=>{setValidateCode(e.target.value)}} placeholder="请输入验证码" />
             </div>
-            <button className ={`${classes.btnBase} ${classes.validateBtnCss}`}>发送验证码</button>
+            <button className ={`${classes.btnBase} ${classes.validateBtnCss}`}
+            onClick={()=>sendValidate()}>发送验证码</button>
             </div>
             <div  className={classes.errMsg}>您输入的验证码有误</div>
             <button className={`${classes.btnBase} ${classes.nextBtnCss}`} onClick={()=>gotoNext()}>下一步</button>
