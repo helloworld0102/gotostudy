@@ -19,4 +19,19 @@ const  validataSend = (email)=>{
     })
 }
 
-export {loginRequest,validataSend} 
+const validataCodeCheck =({email,validateCode})=>{
+    return axios({
+        url:getrequesturl("/User/validataCodeCheck"),
+        data:{
+            email,
+            validateCode
+        },
+        method:"post"
+    })
+}
+
+export {
+    loginRequest,
+    validataSend,
+    validataCodeCheck
+} 

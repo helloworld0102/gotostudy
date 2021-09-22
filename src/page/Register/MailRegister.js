@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import mailPic from '../../static/img/mail.png'
 import validateCodePic from '../../static/img/validateCode.png'
 import {navigate} from 'hookrouter'
-import {validataSend} from '../../request/userRequest'
+import {validataSend,validataCodeCheck} from '../../request/userRequest'
+import { useDispatch } from 'react-redux'
+import {snackBarActionType} from '../../utils/constants'
 
 const useStyles = makeStyles((theme) => ({
   //input外部容器公共属性
@@ -69,18 +71,16 @@ const useStyles = makeStyles((theme) => ({
   }
   }));
 
-const gotoNext =()=>{
-  navigate('/Register/PasswordSet');
-}
 const MailRegister = ()=>{
     const classes = useStyles()
     const [mailBox,setMailBox] = useState("");  //控制邮箱的内容
     const [validataCode,setValidateCode] = useState("")  //控制验证码的内容
     const [mailErrMsg,setMailErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const [validateErrMsg,setValidateErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
-
+    const dispatch = useDispatch();
     
 
+    //验证邮件输入是否正确
     const validateMail = () =>{
       const mailRegex = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;  //抄写的掘金上的。https://juejin.cn/post/6844903795386744845
       //判断输入是否为空
@@ -96,20 +96,36 @@ const MailRegister = ()=>{
       setMailErrMsg({message:"",show:false})
     }
     
+    //发送邮件
     const sendValidate = ()=>{
+      //如果邮箱为空或者格式不规范，则不做任何操作
+      if(mailErrMsg.show==true){
+        return;
+      }
       validataSend(mailBox).then((res)=>{
-        // if(res.flag === 0){
-        //   dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
-        //   dispatch({type:userActionType.ACTION_LOGIN,payload:res.data.data})
-        //   return;
-        // }
-        // else{
-        // dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
-        // stopInterceptor();
-        // navigate('/Main');
-        // }}).catch((err)=>{
-        // console.error(err)
+          // dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
       })
+    }
+
+    const validateValidateCode = () =>{
+      if(validataCode === ""){
+        setValidateErrMsg({message:"验证码不能为空",show:true});
+        return;
+      }
+      setValidateErrMsg({message:"",show:false})
+    }
+    //发送请求，判断输入的验证码是否正确，如果正确，跳转到密码页面，否则不跳转
+    const gotoNext =()=>{
+      validataCodeCheck({mailBox,validataCode}).then((res)=>{
+        if(Response.data.flag===0){
+          //验证码错误或者是验证码过期
+          dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+          return;
+        }
+        //将数据放到主页面
+        navigate('/Register/PasswordSet');
+    })
+      
     }
     
     return(
@@ -128,12 +144,16 @@ const MailRegister = ()=>{
             <div className ={classes.validateLine}>
             <div className={`${classes.inutBoxBase} ${classes.validataInputCss}`}>
             <img src={validateCodePic} alt="验证码" />
-            <input type="text" className={classes.input} value={validataCode} onChange= {(e)=>{setValidateCode(e.target.value)}} placeholder="请输入验证码" />
+            <input type="text" className={classes.input} 
+            value={validataCode} 
+            onChange= {(e)=>{setValidateCode(e.target.value)}} 
+            onBlur = {()=>validateValidateCode()}
+            placeholder="请输入验证码" />
             </div>
             <button className ={`${classes.btnBase} ${classes.validateBtnCss}`}
             onClick={()=>sendValidate()}>发送验证码</button>
             </div>
-            <div  className={classes.errMsg}>您输入的验证码有误</div>
+            <div  className={classes.errMsg} style={{visibility:validateErrMsg.show}}>{validateErrMsg.message}</div>
             <button className={`${classes.btnBase} ${classes.nextBtnCss}`} onClick={()=>gotoNext()}>下一步</button>
         </>
     )
