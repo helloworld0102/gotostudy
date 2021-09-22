@@ -103,7 +103,7 @@ const MailRegister = ()=>{
         return;
       }
       validataSend(mailBox).then((res)=>{
-          // dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+          dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
       })
     }
 
