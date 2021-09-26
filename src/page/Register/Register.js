@@ -31,21 +31,23 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const routes = {
+
+const a = {
     '/' :()=><MailRegister/>,                   //hookrouter中/代表的是当前目录,可以认为这就是默认进去的子路由
-    'PasswordSet' :()=> <PasswordSet/>,         //这里不要写/，把这个理解成cmd中的cd，只是理解的方式，但真正的可能不是这样，因为这个是试出来的
-    'BaseInfo' :()=> <BaseInfo/>
+    '/PasswordSet' :()=> <PasswordSet/>,         //这里不要写/，把这个理解成cmd中的cd，只是理解的方式，但真正的可能不是这样，因为这个是试出来的
+    '/BaseInfo' :()=> <BaseInfo/>
 }
 
-
 const Register = () => {
-    const routeResults = useRoutes(routes);
+
+
+    const routeResults = useRoutes(a);
     //初始化在第一步
     const [activeStep,setActiveStep] = useState(0)
     const classes = useStyles();
     //步骤数组
     const steps = ["验证邮箱","设置密码","填写基本资料","注册成功"]
-
+    
     return (
         <div className ={classes.RegisterDiv}>
             <div className ={classes.ContentDiv}>

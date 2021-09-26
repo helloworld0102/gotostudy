@@ -1,4 +1,4 @@
-import  React,{ useState } from 'react'
+import  React,{ useState,useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import mailPic from '../../static/img/mail.png'
 import validateCodePic from '../../static/img/validateCode.png'
@@ -74,15 +74,18 @@ const useStyles = makeStyles((theme) => ({
 const MailRegister = ()=>{
     const classes = useStyles()
     const [mailBox,setMailBox] = useState("");  //控制邮箱的内容
-    const [validataCode,setValidateCode] = useState("")  //控制验证码的内容
+    const [validateCode,setValidateCode] = useState("")  //控制验证码的内容
     const [mailErrMsg,setMailErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const [validateErrMsg,setValidateErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const dispatch = useDispatch();
-    
+    useEffect(() => {
+      // 使用浏览器的 API 更新页面标题
+      console.info("我修改了");
+    });
 
     //验证邮件输入是否正确
     const validateMail = () =>{
-      const mailRegex = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;  //抄写的掘金上的。https://juejin.cn/post/6844903795386744845
+      const mailRegex = /^[A-Za-z0-9]+([_.][A-Za-z0-9]+)*@([A-Za-z0-9-]+\.)+[A-Za-z]{2,6}$/;  //抄写的掘金上的。https://juejin.cn/post/6844903795386744845
       //判断输入是否为空
       if(mailBox === ""){
         setMailErrMsg({message:"输入邮箱不能为空",show:true})
@@ -99,7 +102,7 @@ const MailRegister = ()=>{
     //发送邮件
     const sendValidate = ()=>{
       //如果邮箱为空或者格式不规范，则不做任何操作
-      if(mailErrMsg.show==true){
+      if(mailErrMsg.show===true){
         return;
       }
       validataSend(mailBox).then((res)=>{
@@ -108,7 +111,7 @@ const MailRegister = ()=>{
     }
 
     const validateValidateCode = () =>{
-      if(validataCode === ""){
+      if(validateCode === ""){
         setValidateErrMsg({message:"验证码不能为空",show:true});
         return;
       }
@@ -116,8 +119,8 @@ const MailRegister = ()=>{
     }
     //发送请求，判断输入的验证码是否正确，如果正确，跳转到密码页面，否则不跳转
     const gotoNext =()=>{
-      validataCodeCheck({mailBox,validataCode}).then((res)=>{
-        if(Response.data.flag===0){
+      validataCodeCheck({email:mailBox,validateCode:validateCode}).then((res)=>{
+        if(res.data.flag===0){
           //验证码错误或者是验证码过期
           dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
           return;
@@ -145,7 +148,7 @@ const MailRegister = ()=>{
             <div className={`${classes.inutBoxBase} ${classes.validataInputCss}`}>
             <img src={validateCodePic} alt="验证码" />
             <input type="text" className={classes.input} 
-            value={validataCode} 
+            value={validateCode} 
             onChange= {(e)=>{setValidateCode(e.target.value)}} 
             onBlur = {()=>validateValidateCode()}
             placeholder="请输入验证码" />

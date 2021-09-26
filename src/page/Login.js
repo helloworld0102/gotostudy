@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react'
+import React, { useState,useRef} from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
@@ -99,6 +99,7 @@ const Login = () => {
   const changePassword =(e)=>{
     setPassword({...password,value:e.target.value})
   }
+
   //在用户离开焦点之后，判断用户是否输入，从而显示错误信息
   const userNameIsNull=(e)=>{
       setUserName({...userName,err:e.target.value==="" ? true :"hidden"})
@@ -146,7 +147,7 @@ const Login = () => {
   }
 
   const gotoRegister = () =>{
-    navigate('/Register/')
+    navigate('/Register')
   }
 
   return (
@@ -172,7 +173,7 @@ const Login = () => {
           <button value="登录" className={classes.loginButton} onClick ={()=>login()}>登录</button>
           <div className ={classes.aBox}>
           <a className={classes.link} onClick ={() => gotoRegister()}>快速注册</a>
-          <a className={classes.link} href="#">忘记密码？（请找管理员）</a>
+          <a className={classes.link} >忘记密码？（请找管理员）</a>
           </div>
         </div>
       </Grid>
