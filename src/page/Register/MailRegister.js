@@ -2,7 +2,8 @@ import  React,{ useState,useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import mailPic from '../../static/img/mail.png'
 import validateCodePic from '../../static/img/validateCode.png'
-import {navigate} from 'hookrouter'
+// import {navigate} from 'hookrouter'
+import {useHistory} from 'react-router-dom'
 import {validataSend,validataCodeCheck} from '../../request/userRequest'
 import { useDispatch } from 'react-redux'
 import {snackBarActionType} from '../../utils/constants'
@@ -78,6 +79,8 @@ const MailRegister = ()=>{
     const [mailErrMsg,setMailErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const [validateErrMsg,setValidateErrMsg] = useState({message:"",show:false})  //控制邮箱输入框的错误信息和是否显示
     const dispatch = useDispatch();
+      //负责页面跳转
+  const history = useHistory();
     useEffect(() => {
       // 使用浏览器的 API 更新页面标题
       console.info("我修改了");
@@ -126,7 +129,7 @@ const MailRegister = ()=>{
           return;
         }
         //将数据放到主页面
-        navigate('/Register/PasswordSet');
+        history.push('/Register/PasswordSet');
     })
       
     }

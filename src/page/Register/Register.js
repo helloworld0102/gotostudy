@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
-import {useRoutes} from 'hookrouter'
+// import {useRoutes} from 'hookrouter'
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import Step from '@material-ui/core/Step'
 import Stepper from '@material-ui/core/Stepper'
 import StepLabel from '@material-ui/core/StepLabel'
@@ -32,16 +33,23 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const a = {
-    '/' :()=><MailRegister/>,                   //hookrouter中/代表的是当前目录,可以认为这就是默认进去的子路由
-    '/PasswordSet' :()=> <PasswordSet/>,         //这里不要写/，把这个理解成cmd中的cd，只是理解的方式，但真正的可能不是这样，因为这个是试出来的
-    '/BaseInfo' :()=> <BaseInfo/>
-}
+// const a = {
+//     '/' :()=><MailRegister/>,                   //hookrouter中/代表的是当前目录,可以认为这就是默认进去的子路由
+//     '/PasswordSet' :()=> <PasswordSet/>,         //这里不要写/，把这个理解成cmd中的cd，只是理解的方式，但真正的可能不是这样，因为这个是试出来的
+//     '/BaseInfo' :()=> <BaseInfo/>
+// }
+
+const registerRoutes =[
+    {path:'/',component:<MailRegister/>, exact:false},
+    {path:'/PasswordSet',component:<PasswordSet/>,exact:false},
+    {path:'/BaseInfo',component:<BaseInfo/>,exact:false},
+    {path:'*',component:<NotFind/>,exact:false}
+    ]
 
 const Register = () => {
 
 
-    const routeResults = useRoutes(a);
+    // const routeResults = useRoutes(a);
     //初始化在第一步
     const [activeStep,setActiveStep] = useState(0)
     const classes = useStyles();
@@ -58,7 +66,15 @@ const Register = () => {
                     </Step>
                 ))}
             </Stepper>
-            {routeResults || <NotFind/>}
+            <Router>
+        <Switch>
+       {registerRoutes.map((item)=>(
+        <Route path={item.path} children= {item.component} exact ={item.exact}>
+        </Route>
+        )
+       )}
+       </Switch>
+       </Router>
             </div>
         </div>
     )

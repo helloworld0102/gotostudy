@@ -2,7 +2,8 @@ import React, { useState,useRef} from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import {navigate,useInterceptor} from 'hookrouter'
+// import {navigate} from 'hookrouter'
+import {useHistory} from 'react-router-dom'
 import {loginRequest} from '../request/userRequest'
 import {userActionType,snackBarActionType} from '../utils/constants'
 import Avatar from '@material-ui/core/Avatar';
@@ -82,17 +83,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const interceptFunction = (currentPath, nextPath) => {
-  return nextPath;
-}
 const Login = () => {
   const [userName, setUserName] = useState({value:"",err:"hidden"});
   const [password, setPassword] = useState({value:"",err:"hidden"});
   const [headPic,setHeadPic] = useState (addFile);
   const classes = useStyles();
-  const stopInterceptor = useInterceptor(interceptFunction);
   const dispatch = useDispatch();
   const fileRef = useRef();
+  //负责页面跳转
+  const history = useHistory();
   const changeUserName =(e)=>{
     setUserName({...userName,value:e.target.value})
   }
@@ -139,15 +138,14 @@ const Login = () => {
       }
       else{
       dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
-      stopInterceptor();
-      navigate('/Main');
+      history.push('/Main');
       }}).catch((err)=>{
       console.error(err)
     })
   }
 
   const gotoRegister = () =>{
-    navigate('/Register')
+    history.push('./Register')
   }
 
   return (

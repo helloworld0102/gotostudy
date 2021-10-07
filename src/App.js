@@ -3,19 +3,28 @@ import { useSelector,useDispatch} from 'react-redux'
 import {snackBarActionType} from './utils/constants'
 import {useRoutes} from 'hookrouter'
 import routes from './route/routes'
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import {Snackbar} from '@material-ui/core'
 import NotFind from './page/NotFind'
 import './App.css'
 
 
 function App() {
-  const routeResults = useRoutes(routes)
+  // const routeResults = useRoutes(routes)
   const dispatch = useDispatch();
   const snackflag = useSelector(state=>state.snackBarReducer)
  
   return (
     <div id ='App'>
-       {routeResults || <NotFind/>}
+      <Router>
+        <Switch>
+       {routes.map((item)=>(
+        <Route path={item.path} children= {item.component} exact ={item.exact}>
+        </Route>
+        )
+       )}
+       </Switch>
+       </Router>
        <Snackbar 
        autoHideDuration = {1000}
        message={snackflag.message} 
