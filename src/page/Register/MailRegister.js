@@ -129,7 +129,7 @@ const MailRegister = ()=>{
           return;
         }
         //将数据放到主页面
-        history.push('/Register/PasswordSet');
+        history.push('/PasswordSet');
     })
       
     }

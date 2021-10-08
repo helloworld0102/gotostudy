@@ -145,7 +145,7 @@ const Login = () => {
   }
 
   const gotoRegister = () =>{
-    history.push('./Register')
+    history.push('/Register')
   }
 
   return (
