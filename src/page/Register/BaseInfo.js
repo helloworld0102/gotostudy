@@ -1,4 +1,4 @@
-const BaseInfo =() =>{
+const BaseInfo =({setStep}) =>{
 return(
     <>
     baseinfo

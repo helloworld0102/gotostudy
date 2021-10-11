@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   }
   }));
 
-const MailRegister = ()=>{
+const MailRegister = ({setStep})=>{
     const classes = useStyles()
     const [mailBox,setMailBox] = useState("");  //控制邮箱的内容
     const [validateCode,setValidateCode] = useState("")  //控制验证码的内容
@@ -128,8 +128,8 @@ const MailRegister = ()=>{
           dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
           return;
         }
-        //将数据放到主页面
-        history.push('/PasswordSet');
+        //切换到密码设置页面,并且将
+        setStep(1)
     })
       
     }

@@ -39,7 +39,7 @@ const registerRoutes =[
     {path:'*',component:<NotFind/>,exact:false}
     ]
 
-const Register = () => {
+const Register = () => { 
 
 
     const classes = useStyles();
@@ -52,10 +52,15 @@ const Register = () => {
     const { url } = useRouteMatch();
     //通过路由变化来判断是否需要修改当前步骤
 
-    useEffect(()=>{
-        console.log("路径修改，重新渲染，当前页面的下标为"+registerRoutes.findIndex(router=>router.path ===url))
-        setActiveStep(registerRoutes.findIndex(router=>("/Register".concat(router.path)) ===url))
-    },[url])
+    const project = () => {
+        switch(activeStep) {
+          case 0:   return <MailRegister setStep ={setActiveStep}/>;
+          case 1:   return <PasswordSet  setStep ={setActiveStep}/>;
+          case 2:   return <BaseInfo  setStep ={setActiveStep}/>;
+          case 3:   return <BaseInfo  setStep ={setActiveStep}/>;
+        }
+      }
+  
     return (
         <div className ={classes.RegisterDiv}>
             <div className ={classes.ContentDiv}>
@@ -66,15 +71,7 @@ const Register = () => {
                     </Step>
                 ))}
             </Stepper>
-            <Router basename = '/Register'>
-        <Switch>
-       {registerRoutes.map((item)=>(
-        <Route path={item.path} children= {item.component} exact ={item.exact}>
-        </Route>
-        )
-       )}
-       </Switch>
-       </Router>
+            {project()}
             </div>
         </div>
     )
