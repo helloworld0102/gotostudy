@@ -131,6 +131,7 @@ const Login = () => {
       password:password.value
     }
     loginRequest(loginMess).then((res)=>{
+      console.log(res)
       if(res.data.flag === 0){
         dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
         dispatch({type:userActionType.ACTION_LOGIN,payload:res.data.data})
