@@ -2,7 +2,6 @@ import React, { useState,useRef} from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-// import {navigate} from 'hookrouter'
 import {useHistory} from 'react-router-dom'
 import {loginRequest} from '../request/userRequest'
 import {userActionType,snackBarActionType} from '../utils/constants'
@@ -41,9 +40,7 @@ const useStyles = makeStyles((theme) => ({
     height: "50px", 
     width: "80%", 
     border: "1px solid rgba(255, 215, 0)", 
-    borderRadius: "20px",
-    paddingLeft: "20px", 
-    lineHeight: "50px" 
+    display:"flex"
   },
   input:{
     color: "yellow",
@@ -63,11 +60,14 @@ const useStyles = makeStyles((theme) => ({
     width: "85%", 
     height: "50px", 
     backgroundColor: "yellow", 
-    borderRadius: "20px", 
     border: 0, 
     color: "#5493f0" ,
     '&:hover':{
       opacity:0.7
+    },
+    '&:active':{
+      position:"relative",
+      top:"1px"
     }
   },
   aBox:{
@@ -122,10 +122,17 @@ const Login = () => {
   const onClickToFile = ()=>{
     fileRef.current.click();
   }
-  const login= ()=>{
-    if(userName.value==="" || password.value === ""){
-      return;
+  const login = ()=>{
+    if(userName.value===""|| password.value === ""){
+    if(userName.value===""){
+       setUserName({...userName,err:true})
+     }
+    if(password.value === ""){
+      setPassword({...password,err:true})
     }
+     return;
+    }
+    console.log("返回值"+setUserName({...userName,err:true}))
     const loginMess ={
       userName:userName.value,
       password:password.value
@@ -158,17 +165,17 @@ const Login = () => {
 
       <Grid container xs ={8} className={classes.formroot} item={true}>
         <div className={classes.loginBox}>
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo"/>
           <div className={classes.inutBox}>
-            <img src={userPic} alt="用户名称" />
+            <img src={userPic} alt="用户名称"  style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="text" className={classes.input}  placeholder="用户名" value={userName.value} onChange ={(e)=>changeUserName(e)} onBlur ={(e)=>userNameIsNull(e)}/>
           </div>
-          <p className={classes.errmsg} style={{visibility:userName.err}}>用户不存在</p>
+          <p className={classes.errmsg} style={{visibility:userName.err}}>用户名称不能为空</p>
           <div className={classes.inutBox}>
-            <img src={passwordPic} alt="密码" />
+            <img src={passwordPic} alt="密码"  style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="password" className={classes.input} placeholder="密码" value={password.value} onChange ={(e)=>changePassword(e)} onBlur ={(e)=>passwordIsNull(e)}/>
           </div>
-          <p className={classes.errmsg} style={{visibility:password.err}} >密码错误</p>
+          <p className={classes.errmsg} style={{visibility:password.err}} >密码不能为空</p>
           <button value="登录" className={classes.loginButton} onClick ={()=>login()}>登录</button>
           <div className ={classes.aBox}>
           <a className={classes.link} onClick ={() => gotoRegister()}>快速注册</a>

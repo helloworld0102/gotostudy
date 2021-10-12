@@ -1,16 +1,15 @@
-import mailPic from '../../static/img/mail.png'
 import passwordPic from '../../static/img/password.png'
 import passwordConfirmPic from '../../static/img/passwordConfirm.png'
 import { makeStyles } from '@material-ui/core/styles'
+
 const useStyles = makeStyles((theme) => ({
     //input外部容器公共属性
     inutBoxBase:{
       height: "50px", 
       border: "1px solid rgba(255, 215, 0)", 
-      lineHeight: "50px",
       display:"flex"
     },
-    //邮箱输入容器独有属性
+    //输入容器属性
     inputCss:{
       width: "100%", 
       marginTop:"30px"
@@ -24,14 +23,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "20px" ,
         autocomplete:"off",
         cursor:"text",
-        width:"100%",
         flex:1
-    },
-    //验证的那一行控件的外部容器
-    validateLine:{
-        display:"flex",
-        height:"50px",
-        marginTop:"30px"
     },
     //按钮基础属性
     btnBase:{
@@ -42,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
       height:"50px",
       '&:hover':{
         opacity:0.7
+      },
+      '&:active':{
+        position:"relative",
+        top:"1px"
       }
     },
     //发送验证码按钮独有属性
@@ -66,15 +62,14 @@ const PasswordSet =(setStep) =>{
     return(
         <>
             <div className={`${classes.inutBoxBase} ${classes.inputCss}`}>
-            <img src={passwordPic} alt="密码" />
+            <img src={passwordPic} alt="密码" style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="text" 
-            id = "mailbox"
             className={classes.input} 
             placeholder="请输入密码"  />
             </div>
             {/* <div className={classes.errMsg} style={{visibility:mailErrMsg.show}}>{mailErrMsg.message}</div> */}
             <div className={`${classes.inutBoxBase} ${classes.inputCss}`}>
-            <img src={passwordConfirmPic} alt="确认密码" />
+            <img src={passwordConfirmPic} alt="确认密码" style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="text" className={classes.input} 
             placeholder="请再次输入密码" />
             </div>

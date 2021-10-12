@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
   inutBoxBase:{
     height: "50px", 
     border: "1px solid rgba(255, 215, 0)", 
-    lineHeight: "50px",
     display:"flex"
   },
   //邮箱输入容器独有属性
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: "20px" ,
       autocomplete:"off",
       cursor:"text",
-      width:"100%",
       flex:1
   },
   //验证的那一行控件的外部容器
@@ -53,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     height:"50px",
     '&:hover':{
       opacity:0.7
+    },
+    '&:active':{
+      position:"relative",
+      top:"1px"
     }
   },
   //发送验证码按钮独有属性
@@ -122,22 +124,22 @@ const MailRegister = ({setStep})=>{
     }
     //发送请求，判断输入的验证码是否正确，如果正确，跳转到密码页面，否则不跳转
     const gotoNext =()=>{
-      validataCodeCheck({email:mailBox,validateCode:validateCode}).then((res)=>{
-        if(res.data.flag===0){
-          //验证码错误或者是验证码过期
-          dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
-          return;
-        }
-        //切换到密码设置页面,并且将
-        setStep(1)
-    })
-      
+    //   validataCodeCheck({email:mailBox,validateCode:validateCode}).then((res)=>{
+    //     if(res.data.flag===0){
+    //       //验证码错误或者是验证码过期
+    //       dispatch({type:snackBarActionType.ACTION_OPEN,payload:{open:true,message:res.data.message}})
+    //       return;
+    //     }
+    //     //切换到密码设置页面,并且将
+    //     setStep(1)
+    // })
+           setStep(1)
     }
     
     return(
         <>
             <div className={`${classes.inutBoxBase} ${classes.mailInputCss}`}>
-            <img src={mailPic} alt="邮箱" />
+            <img src={mailPic} alt="邮箱" style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="text" 
             id = "mailbox"
             className={classes.input} 
@@ -149,7 +151,7 @@ const MailRegister = ({setStep})=>{
             <div className={classes.errMsg} style={{visibility:mailErrMsg.show}}>{mailErrMsg.message}</div>
             <div className ={classes.validateLine}>
             <div className={`${classes.inutBoxBase} ${classes.validataInputCss}`}>
-            <img src={validateCodePic} alt="验证码" />
+            <img src={validateCodePic} alt="验证码" style={{alignSelf:"center",marginLeft:"10px"}}/>
             <input type="text" className={classes.input} 
             value={validateCode} 
             onChange= {(e)=>{setValidateCode(e.target.value)}} 
