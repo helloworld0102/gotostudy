@@ -1,16 +1,13 @@
 import React from 'react'
 import { useSelector,useDispatch} from 'react-redux'
 import {snackBarActionType} from './utils/constants'
-import {useRoutes} from 'hookrouter'
 import routes from './route/routes'
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import {Snackbar} from '@material-ui/core'
-import NotFind from './page/NotFind'
 import './App.css'
 
 
 function App() {
-  // const routeResults = useRoutes(routes)
   const dispatch = useDispatch();
   const snackflag = useSelector(state=>state.snackBarReducer)
  

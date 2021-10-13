@@ -19,9 +19,9 @@ const  validataSend = (email)=>{
     })
 }
 
-const validataCodeCheck =({email,validateCode})=>{
+const validateCodeCheck =({email,validateCode})=>{
     return axios({
-        url:getrequesturl("/User/validataCodeCheck"),
+        url:getrequesturl("/User/validateCodeCheck"),
         data:{
             email,
             validateCode
@@ -33,5 +33,5 @@ const validataCodeCheck =({email,validateCode})=>{
 export {
     loginRequest,
     validataSend,
-    validataCodeCheck
+    validateCodeCheck
 } 
