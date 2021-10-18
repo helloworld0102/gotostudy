@@ -169,7 +169,7 @@ const Login = () => {
         <div className={classes.loginBox}>
           <img src={logo} alt="logo" />
           <div className={classes.inutBox}>
-            <img src={userPic} alt="用户名称" style={{ alignSelf: "center", marginLeft: "10px" }} />
+            <img src={userPic} alt="邮箱或者用户名称" style={{ alignSelf: "center", marginLeft: "10px" }} />
             <input type="text" className={classes.input} placeholder="用户名" value={userName.value} onChange={(e) => changeUserName(e)} onBlur={(e) => userNameIsNull(e)} />
           </div>
           <p className={classes.errmsg} style={{ visibility: userName.err }}>用户名称不能为空</p>
