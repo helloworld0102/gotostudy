@@ -60,34 +60,9 @@ const BaseInfo =({ setStep, registerInfo, setRegisterInfo }) =>{
   const [passwordErrMsg, setPasswordErrMsg] = useState({ message: "", show: false })  //控制密码输入框的错误信息和是否显示
   const [rePasswordErrMsg, setRePasswordErrMsg] = useState({ message: "", show: false })  //控制再次输入密码输入框的错误信息和是否显示
 
-  const validatePassword = () =>{
-    if(password === ""){
-      setPasswordErrMsg({message:"密码不能为空",show:true})
-      return false
-    }
-    setPasswordErrMsg({message:"",show:false})
-    return true
-  }
-
-  const validateRePassword = () =>{
-    if(rePassword === ""){
-      setRePasswordErrMsg({message:"密码不能为空",show:true})
-      return false
-    }
-    if(password !== "" && password !==rePassword){
-      setRePasswordErrMsg({message:"两次输入的密码不一致",show:true})
-      return false
-    }
-    setRePasswordErrMsg({message:"",show:false})
-    return true
-  }
-
+  
    //发送请求，判断输入的验证码是否正确，如果正确，跳转到密码页面，否则不跳转
    const gotoNext = () => {
-     debugger;
-    if(!validatePassword() || !validatePassword()){
-      return
-    }
     //切换到填写基本资料页面,并且将值返回给主页面
     setStep(2)
     setRegisterInfo({...registerInfo,password:password})
@@ -100,22 +75,14 @@ return(
       <input type="password"
         className={classes.input}
         placeholder="请输入密码"
-        value={password}
-        onChange={(e) => { setPassword(e.target.value) }}
-        onBlur={() => validatePassword()}
         />
     </div>
-    <div className={classes.errMsg} style={{ visibility: passwordErrMsg.show }}>{passwordErrMsg.message}</div>
     <div className={`${classes.inutBoxBase} ${classes.inputCss}`}>
       <img src={passwordConfirmPic} alt="确认密码" style={{ alignSelf: "center", marginLeft: "10px" }} />
       <input type="password"
         className={classes.input}
-        placeholder="请再次输入密码"
-        value={rePassword}
-        onChange={(e) => { setRePassword(e.target.value) }} 
-        onBlur = {()=>validateRePassword()}/>
+        placeholder="请再次输入密码" />
     </div>
-    <div className={classes.errMsg} style={{ visibility: rePasswordErrMsg.show }}>{rePasswordErrMsg.message}</div>
     <button className={`${classes.btnBase} ${classes.nextBtnCss}`}
       onClick ={() => gotoNext()} >下一步</button>
   </>

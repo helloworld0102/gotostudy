@@ -84,7 +84,6 @@ const PasswordSet = ({ setStep, registerInfo, setRegisterInfo }) => {
 
    //发送请求，判断输入的验证码是否正确，如果正确，跳转到密码页面，否则不跳转
    const gotoNext = () => {
-     debugger;
     if(!validatePassword() || !validatePassword()){
       return
     }

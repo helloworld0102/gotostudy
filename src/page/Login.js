@@ -187,7 +187,7 @@ const Login = () => {
       </Grid>
       <Grid item xs={2}>
         <input type="file" style={{ display: "none" }} ref={fileRef} onChange={(e) => { changeHead(e) }} />
-        <Avatar sizes="100vw" src={headPic} onClick={() => { onClickToFile() }} />
+        <Avatar sizes="100vw" src="http://localhost:8080/mystatic/abcd.jpg" onClick={() => { onClickToFile() }} />
       </Grid>
 
     </Grid>
