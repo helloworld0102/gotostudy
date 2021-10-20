@@ -22,10 +22,15 @@ const useStyles = makeStyles(() => ({
     /*让里面的内容处在中间位置且控制大小，不至于出现内容少但是占的地方大的情况，很难看*/
     ContentDiv: {
         width: "25%",
-        height: "500px"
+        height: "500px",
+        display:"flex",
+        flexDirection:"column"
     },
     root: {
         backgroundColor: "transparent",
+    },
+    content:{
+        flex:1
     }
 }))
 
@@ -62,7 +67,9 @@ const Register = () => {
                         </Step>
                     ))}
                 </Stepper>
+                <div className ={classes.content}>
                 {project()}
+                </div>
             </div>
         </div>
     )
