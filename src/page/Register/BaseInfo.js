@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
-import passwordPic from '../../static/img/password.png'
-import passwordConfirmPic from '../../static/img/passwordConfirm.png'
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
+import Box from '@mui/material/Box';
 const useStyles = makeStyles(() => ({
-    //输入框的属性
-    input: {
-      color: "yellow",
-      outline: "none",
-      // border: "none",
-      borderTop:"none",
-      borderLeft:"none",
-      borderRight:"none",
-      borderBottom:"1px solid #000",
-      backgroundColor: "transparent",
-      autocomplete: "off",
-      cursor: "text",
-      flex:5
-    },
+   //input外部容器公共属性
+   inutBoxBase: {
+    border: "1px solid rgba(255, 215, 0)",
+    flex:5
+  },
+  input: {
+    color: "yellow",
+    outline: "none",
+    border: "none",
+    backgroundColor: "transparent",
+    autocomplete: "off",
+    cursor: "text",
+    width: "100%",
+    height:"100%"
+  },
     //按钮基础属性
     btnBase: {
       backgroundColor: "yellow",
@@ -64,7 +63,8 @@ const useStyles = makeStyles(() => ({
     },
     birthBox:{
       flex:1,
-      display:"flex"
+      display:"flex",
+      height:"100%"
     },
     hobbyBox:{
       flex:4,
@@ -91,36 +91,57 @@ const BaseInfo =({ setStep, registerInfo, setRegisterInfo }) =>{
     setRegisterInfo({...registerInfo,password:password})
   }
 
+  const showParams =(param) =>{
+    console.log(param)
+  }
+
 return(
+  <LocalizationProvider dateAdapter={AdapterDateFns} >
     <div className ={classes.baseInfoBox}>
-    <div className = {classes.userNameBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px"}}>用户名</div>
+    <div className = {classes.userNameBox}>
+    <div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px",color: "yellow"}}>用户名</div>
+    <div className={classes.inutBoxBase}>
         <input type="text"
           className={classes.input}
           />
-   </div>
-    <div className = {classes.avatarBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px"}}>头像</div>
-    <div style ={{flex:5}}><Avatar sizes="100vw" src="http://localhost:8080/mystatic/abcd.jpg" /></div></div>
-    <div className = {classes.birthBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px"}}>出生日期</div>
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Basic example"
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderInput={(params) => <Input type ="text"/>}
-      />
-    </LocalizationProvider>
     </div>
-    <div className = {classes.hobbyBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px"}}>兴趣</div>
+   </div>
+    <div className = {classes.avatarBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px",color: "yellow"}}>头像</div>
+    <div style ={{flex:5,display:"flex",alignItems:"center"}}><Avatar height="80px" widht= "80px" src="http://localhost:8080/mystatic/abcd.jpg" /></div></div>
+    <div className = {classes.birthBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px",color: "yellow"}}>出生日期</div>
+   
+  <DatePicker
+    label="Custom input"
+    value={value}
+    onChange={(newValue) => {
+      setValue(newValue);
+    }}
+
+    renderInput={({ inputRef, inputProps, InputProps }) => (
+      <div  className={classes.inutBoxBase}>
+        <input className={classes.input} ref={inputRef} {...inputProps} />
+        {InputProps?.endAdornment}
+      </div>
+    )}
+  />
+
+    </div>
+    <div className = {classes.hobbyBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px",color: "yellow"}}>兴趣</div>
+    <div className={classes.inutBoxBase}>
         <input type="text"
           className={classes.input}
-          /></div>
-    <div className = {classes.goalBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px"}}>目标</div>
+          />
+    </div>
+          </div>
+    <div className = {classes.goalBox}><div style ={{alignSelf:"center",flex:1,textAlign:"right",marginRight:"20px",color: "yellow"}}>目标</div>
+    <div className={classes.inutBoxBase}>
         <input type="text"
           className={classes.input}
-          /></div>
+          />
+    </div>
+          </div>
   </div>
+  </LocalizationProvider>
 )
 
 }

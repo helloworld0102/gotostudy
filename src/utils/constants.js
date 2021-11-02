@@ -5,7 +5,7 @@
 
 
 //台式电脑
-const requestUrlPrefix = "http://192.168.1.101:8080";
+const requestUrlPrefix = "http://192.168.1.102:8080";
 
 //拼接url的公共方法,只需要暴露这个方法即可
 const getrequesturl=(requestPath)=>{
